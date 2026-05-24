@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SkyVoyage India - Premium Flight Booking Portal</title>
+  <meta name="description" content="Experience high-fidelity luxury flight booking across India. Search domestic airlines, select 2D seat maps, and book tickets instantly with dynamic payment mockups.">
+  
+  <!-- Styling Sheets -->
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       APP FLOATING HEADER
+       ========================================================================== -->
+  <header class="app-header">
+    <a href="#" class="brand-logo" id="header-logo-link">
+      <!-- Premium Origami Wings Icon -->
+      <svg viewBox="0 0 24 24">
+        <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L14 19v-5.5l8 2.5z"/>
+      </svg>
+      <span class="text-gradient">SkyVoyage</span>
+      <span style="font-size: 0.75rem; color: hsl(var(--accent-gold)); background: rgba(245, 158, 11, 0.1); padding: 2px 6px; border-radius: 4px; font-weight: 700; margin-left:-4px;">INDIA</span>
+    </a>
+    
+    <nav class="main-nav">
+      <a href="#" class="nav-link active" data-view="home">Book Flights</a>
+      <a href="#" class="nav-link" data-view="dashboard">My Dashboard</a>
+      <a href="#" class="nav-link admin-link" data-view="admin">Admin Portal</a>
+    </nav>
+  </header>
+
+  <!-- ==========================================================================
+       MAIN VIEWPORT CONTAINER
+       ========================================================================== -->
+  <main class="app-viewport">
+
+    <!-- ==========================================================================
+         VIEW 1: LANDING & DYNAMIC SEARCH PORTAL
+         ========================================================================== -->
+    <section id="home-view" class="spa-view active-view">
+      <div class="hero-section">
+        <div class="hero-subtitle">Premium Aviation Portal</div>
+        <h1 class="hero-title">Experience the Art of <span class="text-gradient">Indian Travel</span></h1>
+        <p class="hero-tagline">Fly seamlessly across major Indian hubs with luxury carriers, interactive seating configurations, and instant checkouts.</p>
+      </div>
+
+      <div class="glass-panel search-panel">
+        <div class="search-tabs">
+          <button class="search-tab-btn active" data-type="oneway">One Way</button>
+          <button class="search-tab-btn" data-type="roundtrip">Round Trip</button>
+        </div>
+
+        <form id="search-flights-form">
+          <div class="search-grid">
+            <!-- Origin Autocomplete -->
+            <div class="form-group">
+              <label class="form-label" for="search-from">From</label>
+              <div class="input-container">
+                <svg class="input-icon" viewBox="0 0 24 24"><path d="M2.5 19h19v2h-19zm16.84-9.31c.8.27 1.24 1.13.97 1.93l-1.39 4.14-11.14-3.72 1.39-4.14c.26-.8 1.13-1.24 1.93-.97l1.09.37 3.01-4.04 1.74.58-1.57 4.79 3.04 1.02.83-2.52 1.73.58-.83 2.52z"/></svg>
+                <input type="text" id="search-from" class="form-input" placeholder="Origin City or Airport" autocomplete="off" required>
+              </div>
+              <div class="autocomplete-results" id="from-autocomplete-results"></div>
+            </div>
+
+            <!-- Destination Autocomplete -->
+            <div class="form-group" style="position: relative;">
+              <label class="form-label" for="search-to">To</label>
+              <div class="input-container">
+                <svg class="input-icon" viewBox="0 0 24 24"><path d="M2.5 19h19v2h-19zm16.84-9.31c.8.27 1.24 1.13.97 1.93l-1.39 4.14-11.14-3.72 1.39-4.14c.26-.8 1.13-1.24 1.93-.97l1.09.37 3.01-4.04 1.74.58-1.57 4.79 3.04 1.02.83-2.52 1.73.58-.83 2.52z"/></svg>
+                <input type="text" id="search-to" class="form-input" placeholder="Destination City or Airport" autocomplete="off" required>
+              </div>
+              
+              <!-- Swap Button -->
+              <button type="button" id="btn-swap-airports" style="position: absolute; right: -15px; top: 38px; width: 30px; height: 30px; border-radius: 50%; background: hsl(var(--primary-violet)); border: 1.5px solid var(--border-glass-bright); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: var(--shadow-premium);">
+                <svg style="width: 14px; height: 14px; fill: #fff;" viewBox="0 0 24 24">
+                  <path d="M16 17.01V10h-2v7.01h-3L15 21l4-3.99h-3zM9 3L5 6.99h3V14h2V6.99h3L9 3z"/>
+                </svg>
+              </button>
+              
+              <div class="autocomplete-results" id="to-autocomplete-results"></div>
+            </div>
+
+            <!-- Departure Date -->
+            <div class="form-group">
+              <label class="form-label" for="search-depart-date">Depart</label>
+              <div class="input-container">
+                <svg class="input-icon" viewBox="0 0 24 24"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+                <input type="date" id="search-depart-date" class="form-input" required style="color-scheme: dark;">
+              </div>
+            </div>
+
+            <!-- Return Date (Roundtrip only) -->
+            <div class="form-group" id="return-date-group" style="display: none;">
+              <label class="form-label" for="search-return-date">Return</label>
+              <div class="input-container">
+                <svg class="input-icon" viewBox="0 0 24 24"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+                <input type="date" id="search-return-date" class="form-input" style="color-scheme: dark;">
+              </div>
+            </div>
+          </div>
+
+          <div class="search-grid" style="grid-template-columns: 1fr 1fr auto; align-items: flex-end;">
+            <!-- Passenger Count Selector Trigger -->
+            <div class="form-group passenger-dropdown">
+              <label class="form-label" for="search-passengers">Passengers</label>
+              <div class="input-container">
+                <svg class="input-icon" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V20h14v-3.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V20h6v-3.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <input type="text" id="search-passengers" class="form-input" readonly value="1 Passenger" style="cursor: pointer;">
+              </div>
+              
+              <!-- Dynamic Picker Dropdown Drawer -->
+              <div class="passenger-picker-modal" id="passenger-picker">
+                <div class="passenger-row">
+                  <div>
+                    <div class="passenger-type-title">Adults</div>
+                    <div class="passenger-type-desc">Age 12+</div>
+                  </div>
+                  <div class="counter-controls">
+                    <button type="button" class="counter-btn" data-type="adults" data-action="minus">-</button>
+                    <span class="counter-val" data-type="adults">1</span>
+                    <button type="button" class="counter-btn" data-type="adults" data-action="plus">+</button>
+                  </div>
+                </div>
+                <div class="passenger-row">
+                  <div>
+                    <div class="passenger-type-title">Children</div>
+                    <div class="passenger-type-desc">Age 2-12</div>
+                  </div>
+                  <div class="counter-controls">
+                    <button type="button" class="counter-btn" data-type="children" data-action="minus">-</button>
+                    <span class="counter-val" data-type="children">0</span>
+                    <button type="button" class="counter-btn" data-type="children" data-action="plus">+</button>
+                  </div>
+                </div>
+                <div class="passenger-row">
+                  <div>
+                    <div class="passenger-type-title">Infants</div>
+                    <div class="passenger-type-desc">Under 2 years</div>
+                  </div>
+                  <div class="counter-controls">
+                    <button type="button" class="counter-btn" data-type="infants" data-action="minus">-</button>
+                    <span class="counter-val" data-type="infants">0</span>
+                    <button type="button" class="counter-btn" data-type="infants" data-action="plus">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cabin Class Dropdown -->
+            <div class="form-group">
+              <label class="form-label" for="search-cabin-class">Class</label>
+              <div class="input-container">
+                <svg class="input-icon" viewBox="0 0 24 24"><path d="M4 18h16v2H4zm1-8h14v2H5zm2-4h10v2H7z"/></svg>
+                <select id="search-cabin-class" class="form-input">
+                  <option value="economy">Economy Class</option>
+                  <option value="premium">Premium Economy</option>
+                  <option value="business">Business Class</option>
+                  <option value="first">First Class</option>
+                </select>
+                <!-- SVG Down Arrow Indicator -->
+                <svg style="position: absolute; right: 16px; width: 14px; height: 14px; fill: hsl(var(--text-muted)); pointer-events: none;" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary" id="btn-search-flights" style="width: 100%; height: 50px;">
+                <span>Search Flights</span>
+                <svg style="width: 20px; height: 20px; fill: #fff;" viewBox="0 0 24 24">
+                  <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VIEW 2: SEARCH RESULTS & DYNAMIC FILTER BAR
+         ========================================================================== -->
+    <section id="search-results-view" class="spa-view">
+      <div class="search-results-container">
+        
+        <!-- Left Filter Panel -->
+        <aside class="glass-panel filter-sidebar">
+          <div class="filter-section-title">Stops</div>
+          <div class="filter-group">
+            <label class="checkbox-label">
+              <input type="checkbox" class="filter-stop-checkbox" value="0">
+              <span>Non-Stop</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" class="filter-stop-checkbox" value="1">
+              <span>1 Stop</span>
+            </label>
+          </div>
+
+          <div class="filter-section-title">Airlines</div>
+          <div class="filter-group">
+            <label class="checkbox-label">
+              <input type="checkbox" class="filter-airline-checkbox" value="6E">
+              <span>IndiGo</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" class="filter-airline-checkbox" value="AI">
+              <span>Air India</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" class="filter-airline-checkbox" value="SG">
+              <span>SpiceJet</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" class="filter-airline-checkbox" value="QP">
+              <span>Akasa Air</span>
+            </label>
+          </div>
+
+          <div class="filter-section-title">Max Price</div>
+          <div class="filter-group price-slider-container">
+            <input type="range" class="price-slider" id="filter-price-slider" min="3000" max="25000" step="500" value="15000">
+            <div class="price-range-inputs">
+              <span>Min ₹3,000</span>
+              <strong id="filter-price-value" style="color: hsl(var(--accent-gold)); font-weight:700;">₹15,000</strong>
+            </div>
+          </div>
+
+          <div class="filter-section-title">Departure Time</div>
+          <div class="filter-group">
+            <label class="checkbox-label">
+              <input type="checkbox" class="filter-time-checkbox" value="morning">
+              <span>Morning (5 AM - 12 PM)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" class="filter-time-checkbox" value="afternoon">
+              <span>Afternoon (12 PM - 5 PM)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" class="filter-time-checkbox" value="evening">
+              <span>Evening (5 PM - 9 PM)</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" class="filter-time-checkbox" value="night">
+              <span>Night (9 PM - 5 AM)</span>
+            </label>
+          </div>
+        </aside>
+
+        <!-- Right Core Results Content -->
+        <div class="results-content-panel">
+          <div class="results-header">
+            <div class="results-count" id="results-count-text">Loading flights...</div>
+            <div class="sort-tabs">
+              <button class="sort-tab-btn active" data-sort="cheapest">Cheapest</button>
+              <button class="sort-tab-btn" data-sort="fastest">Fastest</button>
+              <button class="sort-tab-btn" data-sort="best">Best Option</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Flights cards list -->
+          <div class="flights-list" id="flights-list-target">
+            <!-- Rendered Reactively in JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VIEW 3: INTERACTIVE 2D SEAT MAP
+         ========================================================================== -->
+    <section id="seat-selection-view" class="spa-view">
+      <div class="seat-view-container">
+        
+        <!-- Left Interactive Seat Map fuselage shell -->
+        <div class="seat-selector-panel">
+          <h2 id="seat-flight-title" style="margin-bottom: 4px;">Airline Carrier</h2>
+          <div id="seat-route-lbl" style="color: hsl(var(--text-muted)); font-weight: 500; font-size: 0.9rem; margin-bottom: 30px;">Route details</div>
+          
+          <div class="fuselage">
+            <div class="cabin-exit-sign">Main Cockpit Exit</div>
+            
+            <!-- Dynamic Seat Grid container -->
+            <div class="seat-cabin-grid" id="seat-map-grid">
+              <!-- Rendered dynamically in JS -->
+            </div>
+            
+            <div class="cabin-exit-sign" style="margin-top: 24px; margin-bottom: 0;">Rear Aft Exit</div>
+          </div>
+
+          <!-- Seating Legend -->
+          <div class="seat-legend">
+            <div class="legend-item">
+              <div class="legend-box avail"></div>
+              <span>Standard</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-box legroom"></div>
+              <span>Extra Legroom (+₹999)</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-box select"></div>
+              <span>Selected</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-box occ"></div>
+              <span>Booked</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right summary billing panel -->
+        <div class="seat-summary-sidebar">
+          <div class="glass-panel" style="height: fit-content;">
+            <h3 style="margin-bottom: 20px; font-size: 1.2rem;">Seat Selection Summary</h3>
+            <div class="summary-card" id="seat-summary-list">
+              <!-- Dynamically populated in JS -->
+            </div>
+            
+            <div style="font-size: 0.8rem; color: hsl(var(--accent-gold)); font-weight: 700; margin-bottom: 15px; text-transform: uppercase;" id="seat-passenger-count-alert">
+              Limit bounds alerts
+            </div>
+            
+            <div class="summary-row" style="border-top: 1px solid var(--border-glass-bright); padding-top: 16px; margin-top: 16px;">
+              <span class="summary-label" style="font-size: 1rem; font-weight: 700;">Subtotal</span>
+              <span class="summary-val-highlight" style="font-size: 1.4rem;" id="seat-total-cost-text">₹0</span>
+            </div>
+          </div>
+          
+          <button class="btn btn-primary" id="btn-seat-confirm" style="width: 100%; margin-top: 20px;" disabled>
+            <span>Proceed to Passenger details</span>
+            <svg style="width: 20px; height: 20px; fill: #fff;" viewBox="0 0 24 24">
+              <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VIEW 4: PASSENGER FORMS & ADDON OPTIONS
+         ========================================================================== -->
+    <section id="passenger-details-view" class="spa-view">
+      <div class="passenger-container">
+        
+        <!-- Target dynamic forms wrapper -->
+        <div id="passenger-forms-wrapper"></div>
+
+        <!-- Secondary Contact Section -->
+        <div class="glass-panel passenger-form-section">
+          <div class="section-head">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <h3 style="font-size: 1.15rem;">Primary Contact Details</h3>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="contact-email" class="form-input" style="padding-left: 16px;" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <div class="input-container">
+                <span style="position: absolute; left: 16px; color: hsl(var(--text-muted)); font-weight: 600; font-size: 0.95rem;">+91</span>
+                <input type="tel" id="contact-phone" class="form-input" style="padding-left: 55px;" required placeholder="98765 43210" pattern="[0-9]{10}">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Optional Indian Business GST INVOICING -->
+        <div class="passenger-form-section gst-invoice-checkbox" id="gst-checkbox-card">
+          <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+            <input type="checkbox" id="chk-gst-invoice" style="width: 18px; height: 18px; accent-color: hsl(var(--primary-violet));">
+            <span>Use Corporate GSTIN Details for TAX Input Credit (Optional)</span>
+          </label>
+          <div class="gst-fields" id="gst-fields-container">
+            <div class="form-group">
+              <label class="form-label">Registered GSTIN</label>
+              <input type="text" id="gstin-no" class="form-input" style="padding-left: 16px;" placeholder="07AAAAA1111A1Z1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Registered Company Name</label>
+              <input type="text" id="gstin-name" class="form-input" style="padding-left: 16px;" placeholder="Acme Corporate Pvt Ltd">
+            </div>
+          </div>
+        </div>
+
+        <!-- Luxury Extras Addon Services Selection -->
+        <div class="glass-panel passenger-form-section">
+          <div class="section-head">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+            <h3 style="font-size: 1.15rem;">Customized Add-on Comforts</h3>
+          </div>
+          
+          <div class="addon-grid">
+            <div class="addon-card" data-addon="baggage">
+              <div class="addon-checkbox"></div>
+              <div class="addon-details">
+                <div class="addon-title">Additional Luggage Limit</div>
+                <div class="addon-desc">Upgrade your checked baggage limit by +15kg extra.</div>
+                <div class="addon-price">₹1,500 / Passenger</div>
+              </div>
+            </div>
+
+            <div class="addon-card" data-addon="meal">
+              <div class="addon-checkbox"></div>
+              <div class="addon-details">
+                <div class="addon-title">Gourmet Inflight Catering</div>
+                <div class="addon-desc">Select premium warm vegetarian/non-veg chef plates.</div>
+                <div class="addon-price">₹450 / Passenger</div>
+              </div>
+            </div>
+
+            <div class="addon-card" data-addon="priority">
+              <div class="addon-checkbox"></div>
+              <div class="addon-details">
+                <div class="addon-title">Priority Boarding Services</div>
+                <div class="addon-desc">Dedicated premium check-in desk and fast security lanes.</div>
+                <div class="addon-price">₹350 / Passenger</div>
+              </div>
+            </div>
+
+            <div class="addon-card" data-addon="offset">
+              <div class="addon-checkbox"></div>
+              <div class="addon-details">
+                <div class="addon-title">Green Carbon Offset Plan</div>
+                <div class="addon-desc">Contribute to certified local Indian reforestation programs.</div>
+                <div class="addon-price">₹150 / Passenger</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-passenger-confirm" style="width: 100%; height: 50px;">
+          <span>Proceed to Payment Checkout</span>
+          <svg style="width: 20px; height: 20px; fill: #fff;" viewBox="0 0 24 24">
+            <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VIEW 5: CHECKOUT & INTERACTIVE CARD GATEWAY
+         ========================================================================== -->
+    <section id="checkout-view" class="spa-view">
+      <div class="checkout-container">
+        
+        <!-- Left Itemized Billing invoice -->
+        <div class="glass-panel" style="height: fit-content;">
+          <h3 style="margin-bottom: 20px; font-size: 1.25rem;">Invoice Itemization</h3>
+          
+          <div class="invoice-summary">
+            <!-- Flight Badge -->
+            <div id="checkout-flight-badge" style="display: flex; gap: 12px; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); padding: 14px; border-radius: 8px; margin-bottom: 10px;">
+            </div>
+
+            <div class="invoice-item">
+              <span>Flight Tickets base subtotal</span>
+              <strong id="invoice-flight-sub">₹0</strong>
+            </div>
+            <div class="invoice-item">
+              <span>Seat selection fees</span>
+              <strong id="invoice-seat-fees">₹0</strong>
+            </div>
+            <div class="invoice-item" id="invoice-addons-row" style="display: none;">
+              <span>Selected add-on comforts</span>
+              <strong id="invoice-addons">₹0</strong>
+            </div>
+            <div class="invoice-item" id="invoice-discount-row" style="display: none; color: hsl(var(--color-success));">
+              <span>Promo deduction</span>
+              <strong id="invoice-discount">-₹0</strong>
+            </div>
+            <div class="invoice-item">
+              <span>Domestic booking Convenience fee</span>
+              <strong id="invoice-convenience">₹299</strong>
+            </div>
+            <div class="invoice-item">
+              <span>Indian GST surcharge (18% on convenience fee)</span>
+              <strong id="invoice-taxes">₹54</strong>
+            </div>
+            
+            <div class="invoice-item invoice-total">
+              <span>Grand Net Payable</span>
+              <strong class="text-gold-gradient" id="invoice-grand-total">₹0</strong>
+            </div>
+          </div>
+
+          <!-- Promo Code Form -->
+          <div class="promo-container">
+            <input type="text" id="input-promo-code" class="form-input" style="padding-left: 16px;" placeholder="PROMO CODE (e.g. INDIANFLYER)">
+            <button class="btn btn-secondary" id="btn-apply-promo" style="padding: 10px 20px;">Apply</button>
+          </div>
+          
+          <!-- Promo success tag -->
+          <div class="promo-status-tag" id="promo-status-alert"></div>
+        </div>
+
+        <!-- Right Razorpay Mocking gateway silhouette -->
+        <div class="razorpay-widget">
+          <div class="razorpay-header">
+            <div style="display: flex; flex-direction: column;">
+              <span class="razorpay-badge">Razorpay Secured</span>
+              <span style="font-size: 0.7rem; color: hsl(var(--text-muted)); margin-top: 2px;">Order SV-${Math.floor(Math.random() * 899999 + 100000)}</span>
+            </div>
+            <div class="razorpay-amount" id="rp-grand-total-amount">₹0</div>
+          </div>
+
+          <!-- Tab Bar -->
+          <div class="razorpay-methods">
+            <button class="method-tab active" data-method="upi">UPI / QR</button>
+            <button class="method-tab" data-method="card">Card Payment</button>
+            <button class="method-tab" data-method="netbanking">Net Banking</button>
+          </div>
+
+          <div class="razorpay-content">
+            
+            <!-- UPI Method Section -->
+            <div class="payment-method-view active" id="rp-view-upi">
+              <div class="upi-grid">
+                <div class="upi-app-btn" data-vpa="gpay">
+                  <span class="upi-app-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="#34A853"/></svg>
+                  </span>
+                  <span class="upi-app-name">GPay</span>
+                </div>
+                <div class="upi-app-btn" data-vpa="phonepe">
+                  <span class="upi-app-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="#673AB7"/></svg>
+                  </span>
+                  <span class="upi-app-name">PhonePe</span>
+                </div>
+                <div class="upi-app-btn" data-vpa="paytm">
+                  <span class="upi-app-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="#00baf2"/></svg>
+                  </span>
+                  <span class="upi-app-name">Paytm</span>
+                </div>
+                <div class="upi-app-btn" data-vpa="upi">
+                  <span class="upi-app-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="#F59E0B"/></svg>
+                  </span>
+                  <span class="upi-app-name">BHIM UPI</span>
+                </div>
+              </div>
+              
+              <div class="form-group" style="margin-bottom: 16px;">
+                <label class="form-label" style="font-size:0.75rem;">Enter UPI VPA ID</label>
+                <input type="text" id="input-rp-upi-id" class="form-input" style="padding-left:16px;" placeholder="mobile-number@upi">
+              </div>
+              <button class="btn btn-gold" id="btn-rp-pay-upi" style="width: 100%; border-radius: 8px;">Verify and Pay via UPI</button>
+            </div>
+
+            <!-- Card Method Section -->
+            <div class="payment-method-view" id="rp-view-card">
+              <!-- Flip Card graphics mockup -->
+              <div class="card-wrapper">
+                <div class="credit-card-silhouette">
+                  <!-- Front face -->
+                  <div class="card-face card-face-front">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                      <div class="card-chip"></div>
+                      <span style="font-size: 0.85rem; font-weight:800; letter-spacing:1px; font-family:'Outfit'; color:#fff;">PLATINUM</span>
+                    </div>
+                    <div class="card-number-display" id="d-card-number">•••• •••• •••• ••••</div>
+                    <div class="card-meta-row">
+                      <div class="card-holder-display">
+                        <div class="card-label">Card Holder</div>
+                        <div id="d-card-holder">YOUR FULL NAME</div>
+                      </div>
+                      <div class="card-expiry-display">
+                        <div class="card-label">Expires</div>
+                        <div id="d-card-expiry">MM/YY</div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Back face -->
+                  <div class="card-face card-face-back">
+                    <div class="card-mag-strip"></div>
+                    <div>
+                      <div class="card-label" style="text-align:right; margin-right: 10px;">CVV Security</div>
+                      <div class="card-cvv-strip">
+                        <div class="card-cvv-display" id="d-card-cvv">•••</div>
+                      </div>
+                    </div>
+                    <div style="font-size: 0.5rem; text-align:center; color:rgba(255,255,255,0.25);">Authorized Signature Only - Not Transferable</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card form details inputs -->
+              <div style="display: grid; grid-template-columns: 1.2fr 1fr 1.2fr; gap: 10px;">
+                <div class="form-group">
+                  <input type="text" id="rp-card-num" class="form-input" style="padding-left:12px; font-size:0.8rem; height:42px;" placeholder="Card Number">
+                </div>
+                <div class="form-group">
+                  <input type="text" id="rp-card-expiry" class="form-input" style="padding-left:12px; font-size:0.8rem; height:42px;" placeholder="MM/YY">
+                </div>
+                <div class="form-group">
+                  <input type="password" id="rp-card-cvv" class="form-input" style="padding-left:12px; font-size:0.8rem; height:42px;" placeholder="CVV">
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="text" id="rp-card-holder" class="form-input" style="padding-left:12px; font-size:0.8rem; height:42px;" placeholder="Cardholder Name">
+              </div>
+              <button class="btn btn-gold" id="btn-rp-pay-card" style="width: 100%; border-radius: 8px;">Process Payment Securely</button>
+            </div>
+
+            <!-- Netbanking Method Section -->
+            <div class="payment-method-view" id="rp-view-netbanking">
+              <div class="nb-grid">
+                <button class="nb-bank-btn">State Bank of India</button>
+                <button class="nb-bank-btn">HDFC Bank</button>
+                <button class="nb-bank-btn">ICICI Bank</button>
+                <button class="nb-bank-btn">Axis Bank</button>
+                <button class="nb-bank-btn">Kotak Mahindra</button>
+                <button class="nb-bank-btn">Yes Bank</button>
+              </div>
+              <p style="font-size: 0.7rem; color: hsl(var(--text-muted)); text-align:center; margin-top: 20px;">You will be redirected to the secure page of your selected bank.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VIEW 6: DIGITAL BOARDING PASS SUCCESS
+         ========================================================================== -->
+    <section id="ticket-view" class="spa-view">
+      <div class="ticket-success-header">
+        <div class="success-badge">
+          <!-- Checkmark SVG -->
+          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 8px;">Booking Confirmed!</h2>
+        <p style="color: hsl(var(--text-muted));">Your digital boarding pass has been created. A receipt was sent to your email.</p>
+      </div>
+
+      <!-- Dashed Tear-off Boarding Pass Card -->
+      <div class="boarding-pass-card">
+        
+        <!-- Header -->
+        <div class="ticket-header" id="ticket-pass-header">
+          <span class="ticket-brand">
+            <svg style="width: 20px; height: 20px; fill: hsl(var(--accent-gold));" viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L14 19v-5.5l8 2.5z"/></svg>
+            <span>SkyVoyage India</span>
+          </span>
+          <span class="ticket-class-tag" id="ticket-class-tag">Class</span>
+        </div>
+
+        <!-- Body -->
+        <div class="ticket-body">
+          <!-- Origin Node -->
+          <div>
+            <div class="ticket-airport-code" id="ticket-origin-code">DEL</div>
+            <div class="ticket-airport-name" id="ticket-origin-city">Delhi</div>
+          </div>
+          
+          <!-- Center Plane icon -->
+          <div class="ticket-flight-icon-container">
+            <span class="ticket-flight-no" id="ticket-flight-no">SG-123</span>
+            <svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L14 19v-5.5l8 2.5z"/></svg>
+            <span style="font-size: 0.65rem; color: hsl(var(--accent-gold)); font-weight: 700;">CONFIRMED</span>
+          </div>
+
+          <!-- Destination Node -->
+          <div style="text-align: right;">
+            <div class="ticket-airport-code" id="ticket-dest-code">BOM</div>
+            <div class="ticket-airport-name" id="ticket-dest-city">Mumbai</div>
+          </div>
+        </div>
+
+        <!-- Itemized Data Grid -->
+        <div class="ticket-body" style="padding-top: 0; padding-bottom: 25px; grid-template-columns: 1fr;">
+          <div class="ticket-meta-grid">
+            <div class="ticket-meta-item">
+              <span class="ticket-meta-lbl">Passenger Name</span>
+              <span class="ticket-meta-val" id="ticket-pax-names">Rohan Sharma</span>
+            </div>
+            <div class="ticket-meta-item">
+              <span class="ticket-meta-lbl">Departure Date</span>
+              <span class="ticket-meta-val" id="ticket-date-str">Sun, May 25, 2026</span>
+            </div>
+            <div class="ticket-meta-item">
+              <span class="ticket-meta-lbl">Boarding Time</span>
+              <span class="ticket-meta-val" id="ticket-dep-time">10:45 AM</span>
+            </div>
+            <div class="ticket-meta-item">
+              <span class="ticket-meta-lbl">Arrival Time</span>
+              <span class="ticket-meta-val" id="ticket-arr-time">12:30 PM</span>
+            </div>
+            <div class="ticket-meta-item">
+              <span class="ticket-meta-lbl">Assigned Seats</span>
+              <span class="ticket-meta-val" id="ticket-seats">12A</span>
+            </div>
+            <div class="ticket-meta-item">
+              <span class="ticket-meta-lbl">Cabin Class</span>
+              <span class="ticket-meta-val" id="ticket-cabin-label" style="text-transform: uppercase;">Economy</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Tear-off barcode -->
+        <div class="ticket-footer-strip">
+          <div style="display: flex; flex-direction: column;">
+            <span class="ticket-meta-lbl">Electronic Ticket PNR</span>
+            <span style="font-family: 'Outfit'; font-size: 1.15rem; font-weight:800; color: #fff; letter-spacing:1px;" id="ticket-pnr">PNR123</span>
+          </div>
+          
+          <div class="ticket-barcode-container">
+            <div class="barcode-lines"></div>
+            <div class="barcode-num" id="ticket-barcode-pnr">PNR123</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Actions -->
+      <div style="max-width: 750px; margin: 0 auto; display: flex; gap: 15px;">
+        <button class="btn btn-secondary" id="btn-print-ticket" style="flex: 1;">Print / Save PDF</button>
+        <button class="btn btn-primary" id="btn-close-ticket" style="flex: 1;">Go to My Dashboard</button>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VIEW 7: PASSENGER LOYALTY PROFILE HUB
+         ========================================================================== -->
+    <section id="dashboard-view" class="spa-view">
+      <div class="dashboard-grid">
+        
+        <!-- Left Profile Details Card -->
+        <div class="loyalty-card">
+          <div class="loyalty-tier-badge" id="dash-tier">Elite Gold</div>
+          
+          <div class="loyalty-miles" id="dash-miles">0</div>
+          <div class="loyalty-miles-label">Accumulated Miles Balance</div>
+          
+          <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px;">
+            <div style="font-size: 0.75rem; color: hsl(var(--text-muted)); text-transform: uppercase;">Loyalty Traveler</div>
+            <div style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-top: 4px;" id="dash-pax-name">Name</div>
+            <div style="font-size: 0.8rem; color: hsl(var(--text-muted)); margin-top: 4px;">Frequent Flyer: SV-${Math.floor(Math.random() * 899999 + 100000)}</div>
+          </div>
+          
+          <div style="margin-top: 20px; background: rgba(255,255,255,0.02); padding: 14px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.06);">
+            <div style="font-size:0.75rem; font-weight:700; color: hsl(var(--accent-gold)); text-transform:uppercase;">Membership Perk</div>
+            <p style="font-size:0.75rem; color: hsl(var(--text-muted)); margin-top:4px;">Complimentary priority airport lounge access across all Tier-1 cities in India.</p>
+          </div>
+        </div>
+
+        <!-- Right Past booking records timeline -->
+        <div class="glass-panel">
+          <h2 class="history-title">
+            <svg style="width: 24px; height: 24px; fill: hsl(var(--primary-violet));" viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+            <span>Your Scheduled Flights</span>
+          </h2>
+          
+          <div class="history-list" id="dash-bookings-list">
+            <!-- Dynamically populated in JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VIEW 8: ADMINISTRATIVE SCHEDULER & SVG ANALYTICS
+         ========================================================================== -->
+    <section id="admin-view" class="spa-view">
+      <div class="admin-grid">
+        
+        <!-- Left Side Forms & SVG Sales Chart widgets -->
+        <div>
+          <!-- Revenue Widget -->
+          <div class="glass-panel" style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; border-left: 5px solid hsl(var(--accent-gold));">
+            <div>
+              <div style="font-size: 0.8rem; color: hsl(var(--text-muted)); text-transform: uppercase;">Gross Sales Revenue (Active)</div>
+              <h2 style="font-size: 2.2rem; margin-top: 4px;" class="text-gold-gradient" id="admin-total-revenue">₹0</h2>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.8rem; color: hsl(var(--text-muted)); text-transform: uppercase;">Booked Passengers</div>
+              <h2 style="font-size: 2.2rem; margin-top: 4px; color: #fff;" id="admin-total-bookings">0</h2>
+            </div>
+          </div>
+
+          <!-- SVG Chart -->
+          <div class="chart-container">
+            <h3 style="font-size: 1rem; margin-bottom: 16px;">Domestic Monthly Revenue Trends</h3>
+            <svg class="chart-svg" id="admin-svg-chart">
+              <defs>
+                <linearGradient id="chart-bar-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="hsl(var(--primary-violet))" stop-opacity="1" />
+                  <stop offset="100%" stop-color="hsl(var(--secondary-rose))" stop-opacity="0.7" />
+                </linearGradient>
+              </defs>
+              <!-- Grid Lines -->
+              <line class="chart-grid-line" x1="40" y1="20" x2="360" y2="20" />
+              <line class="chart-grid-line" x1="40" y1="75" x2="360" y2="75" />
+              <line class="chart-grid-line" x1="40" y1="130" x2="360" y2="130" />
+              <line class="chart-axis-line" x1="40" y1="130" x2="360" y2="130" />
+              
+              <!-- Bars container -->
+              <g id="admin-svg-bars"></g>
+            </svg>
+          </div>
+
+          <!-- New Flight Injector Form -->
+          <div class="glass-panel">
+            <h3 style="font-size: 1.15rem; margin-bottom: 20px;">Flight Scheduler Form</h3>
+            <form id="admin-add-flight-form">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Airline Carrier</label>
+                  <select class="form-input" id="admin-fl-airline" style="padding-left:16px;">
+                    <option value="6E">IndiGo</option>
+                    <option value="AI">Air India</option>
+                    <option value="SG">SpiceJet</option>
+                    <option value="QP">Akasa Air</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Flight Number</label>
+                  <input type="text" id="admin-fl-number" class="form-input" style="padding-left:16px;" placeholder="502" required>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Origin Code (IATA)</label>
+                  <input type="text" id="admin-fl-origin" class="form-input" style="padding-left:16px;" placeholder="DEL" maxlength="3" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Destination Code (IATA)</label>
+                  <input type="text" id="admin-fl-dest" class="form-input" style="padding-left:16px;" placeholder="BOM" maxlength="3" required>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                <div class="form-group">
+                  <label class="form-label">Date</label>
+                  <input type="date" id="admin-fl-date" class="form-input" style="padding-left:10px; padding-right:10px; font-size:0.75rem;" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Departure</label>
+                  <input type="time" id="admin-fl-dep" class="form-input" style="padding-left:10px; padding-right:10px; font-size:0.75rem;" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Arrival</label>
+                  <input type="time" id="admin-fl-arr" class="form-input" style="padding-left:10px; padding-right:10px; font-size:0.75rem;" required>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label">Duration String</label>
+                  <input type="text" id="admin-fl-dur" class="form-input" style="padding-left:16px;" placeholder="2h 15m">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Base Fare (₹)</label>
+                  <input type="number" id="admin-fl-price" class="form-input" style="padding-left:16px;" placeholder="3500" required>
+                </div>
+              </div>
+              <button class="btn btn-primary" type="submit" style="width: 100%;">Schedule Dynamic Flight</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right Core active booking database manifest lists -->
+        <div class="glass-panel" style="height: fit-content;">
+          <h3 style="font-size: 1.15rem; margin-bottom: 20px;">Active Booking Manifests</h3>
+          
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>PNR</th>
+                  <th>Passengers</th>
+                  <th>Route</th>
+                  <th>Flight</th>
+                  <th>Seats</th>
+                  <th>Total</th>
+                  <th style="text-align: center;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-manifest-rows">
+                <!-- Reactively Populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       APP PROCESSING LOADER OVERLAY
+       ========================================================================== -->
+  <div class="processing-overlay" id="rp-loader-overlay">
+    <div class="loader-container">
+      <div class="radar-spinner"></div>
+      <div class="loader-status-text" id="rp-loader-status">Connecting to bank servers...</div>
+      <p style="font-size: 0.8rem; color: hsl(var(--text-muted)); margin-top: 8px;">Please do not close this window or refresh the page.</p>
+    </div>
+  </div>
+
+  <!-- Main Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
